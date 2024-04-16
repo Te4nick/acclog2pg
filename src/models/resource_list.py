@@ -1,0 +1,14 @@
+class ResourceList:
+    ctype: str
+    mem: str
+    mpiprocs: int
+    naccelerators: int
+    ncpus: int
+    nodect: int
+    nodes: str
+    place: str
+    psets: str
+    qprio: str
+    select: str
+    vntype: str
+    walltime: str
