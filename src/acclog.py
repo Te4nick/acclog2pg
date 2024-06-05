@@ -39,6 +39,10 @@ class AccountingLog(PBSAccountingLog):
             'eligible_time',
         ]
 
+        self.banned_columns = {
+            'delect': True,
+        }
+
     def analyze(self, path=None, start=None, end=None, hostname=None,
                 summarize=True, sudo=False):
         res = super().analyze(path, start, end, hostname, summarize, sudo)
@@ -70,6 +74,8 @@ class AccountingLog(PBSAccountingLog):
                 if d['status_type'] != 'A':  # workaround 'A' poor format MM/DD/YYYY HH:mm:SS;A;job_id;Job rejected by all possible destinations
                     for a in m.group('msg').split():
                         (k, v) = a.split('=', 1)
+                        if self.banned_columns.get(k):
+                            continue
                         if k in self.int_keys:
                             v = int(v)
                         if k in self.walltime_to_seconds_keys:
@@ -84,12 +90,6 @@ class AccountingLog(PBSAccountingLog):
 
                 no_domain_id = m.group('id').split(sep='.')[0]
                 self.job_info_res[no_domain_id] = d
-
-                # if not (self.__job_db is None):  # Put to DB
-                #     if self.__job_db.has_job(m.group('id')):
-                #         self.__job_db.update_job(m.group('id'), d)
-                #     else:
-                #         self.__job_db.create_job(m.group('id'), d)
 
         return PARSER_OK_CONTINUE
 
