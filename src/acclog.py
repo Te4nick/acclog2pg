@@ -40,7 +40,7 @@ class AccountingLog(PBSAccountingLog):
         ]
 
         self.banned_columns = {
-            'delect': True,
+            'Resource_List.delect': True,
         }
 
     def analyze(self, path=None, start=None, end=None, hostname=None,
